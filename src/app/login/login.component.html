@@ -1,0 +1,55 @@
+><!-- Container for Login -->
+<div
+  class="flex justify-center items-center max-w-[1440px] mx-auto min-h-screen"
+>
+  <!-- Login Card -->
+  <div
+    class="flex flex-col justify-center items-center gap-5 shadow-2xl p-10 rounded-lg"
+  >
+    <h1 class="text-center text-3xl">Log In</h1>
+    <!-- Login Form -->
+    <form
+      class="flex flex-col justify-center items-center gap-4"
+      novalidate
+      autocomplete="off"
+    >
+      <!-- EmailOrUsername Input -->
+      <div class="flex flex-col gap-2">
+        <label for="emailOrUsername" class="text-lg"> Email or Username </label>
+        <input
+          type="text"
+          id="emailOrUsername"
+          class="px-2 py-1 border-2 border-black rounded-lg"
+        />
+      </div>
+      <!-- End of EmailOrUsername Input -->
+      <!-- Password Input -->
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between items-center">
+          <label for="login-password" class="text-lg"> Password </label>
+          <a href="/forgot-password" class="text-blue-500 text-md"
+            >Forgot password?</a
+          >
+        </div>
+        <input
+          type="password"
+          id="login-password"
+          class="px-2 py-1 border-2 border-black rounded-lg"
+        />
+      </div>
+      <!-- End of Password Input -->
+
+      <app-button
+        type="submit"
+        text="Log In"
+        styling="rounded-full px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full mt-5 min-w-[230px]"
+      ></app-button>
+    </form>
+    <!-- End of Login Form -->
+    <p class="text-md">
+      Don't have an account?
+      <a href="/signup" class="text-blue-500">Sign Up.</a>
+    </p>
+  </div>
+  <!-- End of Login Card -->
+</div>

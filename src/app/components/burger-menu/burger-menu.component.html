@@ -1,0 +1,60 @@
+<div class="flex justify-center items-center lg:hidden">
+  <!-- Burger Menu -->
+  <div class="relative inline-block text-left">
+    <img
+      (click)="toggleMenu()"
+      class="hover:cursor-pointer z-50"
+      src="../../../assets/bars-solid.svg"
+      alt="menu"
+      width="25"
+      height="25"
+    />
+
+    <!-- Menu Overlay -->
+    <div
+      [ngClass]="{ 'fixed inset-0 overlay-opacity z-40': isOpen }"
+      (click)="closeMenu()"
+    >
+      <!-- Nav Links -->
+      <div
+        class="fixed top-0 right-0 h-full w-64 bg-white shadow-2xl transition-all duration-300 ease-in-out"
+        [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }"
+      >
+        <ul class="flex flex-col justify-center items-center gap-5 pt-16">
+          <img
+            src="../../../assets/xmark-solid.svg"
+            alt="x icon"
+            width="25"
+            height="25"
+            class="fixed top-6 right-6 hover:cursor-pointer"
+            (click)="closeMenu()"
+          />
+          @for (link of NAVLINKS; track $index) {
+          <li class="">
+            <p
+              class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
+            >
+              <a [href]="link.href">{{ link.text }}</a>
+            </p>
+          </li>
+          }
+          <li class="mt-10">
+            <app-button
+              text="Log In"
+              styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full"
+            ></app-button>
+          </li>
+          <li>
+            <app-button
+              text="Sign Up"
+              styling="rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-full"
+            ></app-button>
+          </li>
+        </ul>
+      </div>
+      <!-- End of Nav Links -->
+    </div>
+    <!-- End of Menu Overlay -->
+  </div>
+  <!-- End of Burger Menu -->
+</div>

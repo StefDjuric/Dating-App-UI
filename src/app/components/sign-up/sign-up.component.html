@@ -1,0 +1,64 @@
+<!-- Container -->
+<div
+  class="mx-auto px-6 lg:px-15 3xl:px-0 max-w-[1440px] flex justify-center items-center min-h-screen"
+>
+  <!-- Sign Up card -->
+  <div
+    class="flex-flex-col justify-center items-center p-8 shadow-2xl rounded-lg"
+  >
+    <h1 class="text-3xl text-center">Sign Up</h1>
+    <!-- Form Inputs -->
+    <form
+      autocomplete="off"
+      novalidate
+      class="flex flex-col justify-center items-center mt-4 gap-4"
+    >
+      <!-- Email Input -->
+      <div class="flex flex-col gap-2">
+        <label for="signup-email" class="text-lg">Email</label>
+        <input
+          type="email"
+          id="signup-email"
+          class="px-2 py-1 rounded-lg border-2 border-black"
+        />
+      </div>
+      <!-- End of Email Input -->
+
+      <!-- Username Input -->
+      <div class="flex flex-col gap-2">
+        <label for="signup-username" class="text-lg">Username</label>
+        <input
+          type="text"
+          id="signup-username"
+          class="px-2 py-1 rounded-lg border-2 border-black"
+        />
+      </div>
+      <!-- End of Username Input -->
+
+      <!-- Password Input -->
+      <div class="flex flex-col gap-2">
+        <label for="signup-password" class="text-lg">Password</label>
+        <input
+          type="password"
+          id="signup-password"
+          class="px-2 py-1 rounded-lg border-2 border-black"
+        />
+      </div>
+      <!-- End of Password Input -->
+
+      <app-button
+        type="submit"
+        text="Sign Up"
+        styling="mt-4 min-w-[230px] text-center rounded-full px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-full"
+      ></app-button>
+    </form>
+    <!-- End of Form Inputs -->
+    <p class="text-md mt-5">
+      Already have an account?<a href="/login" class="text-blue-500">
+        Log In.</a
+      >
+    </p>
+  </div>
+  <!--End of Sign Up card -->
+</div>
+<!-- End of Container -->

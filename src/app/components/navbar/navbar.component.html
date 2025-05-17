@@ -1,0 +1,40 @@
+<nav
+  class="mx-auto px-6 lg:px-15 3xl:px-0 py-5 relative max-w-[1440px] z-30 flex justify-between items-center"
+>
+  <!-- Logo -->
+  <a href="/" class="font-bold text-4xl text-[#212529]">Rika</a>
+
+  <!-- Nav Links -->
+  <div class="hidden lg:flex lg:justify-center lg:items-center w-full">
+    <ul class="hidden lg:flex lg:justify-center lg:items-center w-full gap-8">
+      @for (link of NAV_LINKS; track $index) {
+      <li
+        class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
+      >
+        <a [href]="link.href">{{ link.text }}</a>
+      </li>
+      }
+    </ul>
+  </div>
+  <!-- End of Nav Links -->
+
+  <!-- Container for log in and sign in buttons -->
+  <div class="hidden lg:flex lg:justify-between lg:items-center gap-4">
+    <app-button
+      [routerLink]="['/login']"
+      routerLinkActive="router-link-active"
+      text="Log In"
+      styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full"
+    ></app-button>
+    <app-button
+      [routerLink]="['signup']"
+      routerLinkActive="router-link-active"
+      text="Sign Up"
+      styling="rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-full"
+    ></app-button>
+  </div>
+  <!-- End of Container for log in and sign in buttons -->
+
+  <!-- Mobile menu -->
+  <app-burger-menu></app-burger-menu>
+</nav>

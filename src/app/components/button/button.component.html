@@ -1,0 +1,9 @@
+<button
+  [ngClass]="styling"
+  [disabled]="disabled"
+  [type]="type"
+  (click)="OnClick($event)"
+>
+  <img *ngIf="iconSrc" [src]="iconSrc" [alt]="text" width="24" height="24" />
+  <p class="text-lg text-white">{{ text }}</p>
+</button>
