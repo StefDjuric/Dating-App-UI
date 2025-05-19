@@ -1,4 +1,4 @@
-><!-- Container for Login -->
+<!-- Container for Login -->
 <div
   class="flex justify-center items-center max-w-[1440px] mx-auto min-h-screen"
 >
@@ -9,15 +9,19 @@
     <h1 class="text-center text-3xl">Log In</h1>
     <!-- Login Form -->
     <form
+      #loginForm="ngForm"
+      (ngSubmit)="login()"
       class="flex flex-col justify-center items-center gap-4"
       novalidate
       autocomplete="off"
     >
       <!-- EmailOrUsername Input -->
       <div class="flex flex-col gap-2">
-        <label for="emailOrUsername" class="text-lg"> Email or Username </label>
+        <label for="emailOrUsername" class="text-lg"> Email or Username</label>
         <input
           type="text"
+          name="emailOrUsername"
+          [(ngModel)]="model.emailOrUsername"
           id="emailOrUsername"
           class="px-2 py-1 border-2 border-black rounded-lg"
         />
@@ -34,6 +38,8 @@
         <input
           type="password"
           id="login-password"
+          name="password"
+          [(ngModel)]="model.password"
           class="px-2 py-1 border-2 border-black rounded-lg"
         />
       </div>

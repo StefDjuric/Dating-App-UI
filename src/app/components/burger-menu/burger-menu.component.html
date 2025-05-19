@@ -29,7 +29,9 @@
             class="fixed top-6 right-6 hover:cursor-pointer"
             (click)="closeMenu()"
           />
-          @for (link of NAVLINKS; track $index) {
+          <!-- Logged In NavLinks -->
+          @if (accountService.currentUser()) { @for (link of PRIVATE_NAVLINKS;
+          track $index) {
           <li class="">
             <p
               class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
@@ -37,7 +39,29 @@
               <a [href]="link.href">{{ link.text }}</a>
             </p>
           </li>
-          }
+
+          } }
+          <!-- Public NavLinks -->
+          @else { @for (link of PUBLIC_NAV_LINKS; track $index) {
+          <li class="">
+            <p
+              class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
+            >
+              <a [href]="link.href">{{ link.text }}</a>
+            </p>
+          </li>
+          } }
+          <!-- Log Out button -->
+          @if (accountService.currentUser()) {
+          <li class="mt-10">
+            <app-button
+              text="Log Out"
+              styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full"
+              (clicked)="accountService.logout()"
+            ></app-button>
+          </li>
+          } @else {
+
           <li class="mt-10">
             <app-button
               text="Log In"
@@ -50,6 +74,7 @@
               styling="rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-full"
             ></app-button>
           </li>
+          }
         </ul>
       </div>
       <!-- End of Nav Links -->

@@ -1,5 +1,10 @@
-export const NAV_LINKS: Array<{ text: string; href: string }> = [
+export const PRIVATE_NAV_LINKS: Array<{ text: string; href: string }> = [
   { text: 'Matches', href: '/matches' },
   { text: 'Lists', href: '/lists' },
   { text: 'Messages', href: '/messages' },
+];
+
+export const PUBLIC_NAV_LINKS: Array<{ text: string; href: string }> = [
+  { text: 'About Us', href: '/about' },
+  { text: 'Contact Us', href: '/contact' },
 ];

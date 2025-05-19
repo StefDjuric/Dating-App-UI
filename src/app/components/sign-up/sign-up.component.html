@@ -9,6 +9,8 @@
     <h1 class="text-3xl text-center">Sign Up</h1>
     <!-- Form Inputs -->
     <form
+      #registerForm="ngForm"
+      (ngSubmit)="register()"
       autocomplete="off"
       novalidate
       class="flex flex-col justify-center items-center mt-4 gap-4"
@@ -17,6 +19,8 @@
       <div class="flex flex-col gap-2">
         <label for="signup-email" class="text-lg">Email</label>
         <input
+          name="email"
+          [(ngModel)]="model.email"
           type="email"
           id="signup-email"
           class="px-2 py-1 rounded-lg border-2 border-black"
@@ -28,6 +32,8 @@
       <div class="flex flex-col gap-2">
         <label for="signup-username" class="text-lg">Username</label>
         <input
+          name="username"
+          [(ngModel)]="model.username"
           type="text"
           id="signup-username"
           class="px-2 py-1 rounded-lg border-2 border-black"
@@ -39,6 +45,8 @@
       <div class="flex flex-col gap-2">
         <label for="signup-password" class="text-lg">Password</label>
         <input
+          name="password"
+          [(ngModel)]="model.password"
           type="password"
           id="signup-password"
           class="px-2 py-1 rounded-lg border-2 border-black"

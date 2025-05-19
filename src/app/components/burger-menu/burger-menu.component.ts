@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { NAV_LINKS } from '../../constants/constants';
+import { Component, inject } from '@angular/core';
+import { PRIVATE_NAV_LINKS, PUBLIC_NAV_LINKS } from '../../constants/constants';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-burger-menu',
@@ -12,7 +13,9 @@ import { CommonModule } from '@angular/common';
 })
 export class BurgerMenuComponent {
   isOpen: boolean = false;
-  NAVLINKS = NAV_LINKS;
+  PRIVATE_NAVLINKS = PRIVATE_NAV_LINKS;
+  PUBLIC_NAV_LINKS = PUBLIC_NAV_LINKS;
+  accountService = inject(AccountService);
 
   toggleMenu(): void {
     this.isOpen = !this.isOpen;
