@@ -3,13 +3,14 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../environment/environment';
 import { User } from '../models/models';
 import { map } from 'rxjs';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
   private http = inject(HttpClient);
-  private tokenKey = environment.tokenKey;
   private baseUrl = environment.baseUrl;
+  private router = inject(Router);
   currentUser = signal<User | null>(null);
 
   login(model: { username: string; password: string }) {
@@ -21,6 +22,7 @@ export class AccountService {
             localStorage.setItem('user', JSON.stringify(user));
             this.currentUser.set(user);
           }
+          return user;
         })
       );
   }
@@ -42,5 +44,6 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUser.set(null);
+    this.router.navigateByUrl('/home');
   }
 }

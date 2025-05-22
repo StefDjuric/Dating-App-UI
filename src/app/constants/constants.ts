@@ -1,5 +1,5 @@
 export const PRIVATE_NAV_LINKS: Array<{ text: string; href: string }> = [
-  { text: 'Matches', href: '/matches' },
+  { text: 'Matches', href: '/members' },
   { text: 'Lists', href: '/lists' },
   { text: 'Messages', href: '/messages' },
 ];

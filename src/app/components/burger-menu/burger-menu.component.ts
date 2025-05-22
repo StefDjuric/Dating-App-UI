@@ -3,10 +3,11 @@ import { PRIVATE_NAV_LINKS, PUBLIC_NAV_LINKS } from '../../constants/constants';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
 import { AccountService } from '../../services/account.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-burger-menu',
-  imports: [ButtonComponent, CommonModule],
+  imports: [ButtonComponent, CommonModule, RouterLink],
   standalone: true,
   templateUrl: './burger-menu.component.html',
   styleUrl: './burger-menu.component.css',

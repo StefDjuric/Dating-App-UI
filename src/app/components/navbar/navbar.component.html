@@ -2,7 +2,7 @@
   class="mx-auto px-6 lg:px-15 3xl:px-0 py-5 relative max-w-[1440px] z-30 flex justify-between items-center"
 >
   <!-- Logo -->
-  <a href="/" class="font-bold text-4xl text-[#212529]">Rika</a>
+  <a routerLink="/" class="font-bold text-4xl text-[#212529]">Rika</a>
 
   <!-- Nav Links -->
   <div class="hidden lg:flex lg:justify-center lg:items-center w-full">
@@ -13,7 +13,9 @@
       <li
         class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
       >
-        <a [href]="link.href">{{ link.text }}</a>
+        <a [routerLink]="[link.href]" routerLinkActive="router-link-active">{{
+          link.text
+        }}</a>
       </li>
       } }
       <!-- Public Nav Links -->
@@ -21,7 +23,9 @@
       <li
         class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
       >
-        <a [href]="link.href">{{ link.text }}</a>
+        <a [routerLink]="[link.href]" routerLinkActive="router-link-active">{{
+          link.text
+        }}</a>
       </li>
       } }
     </ul>
@@ -48,7 +52,7 @@
       styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full"
     ></app-button>
     <app-button
-      [routerLink]="['signup']"
+      [routerLink]="['/signup']"
       routerLinkActive="router-link-active"
       text="Sign Up"
       styling="rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-full"

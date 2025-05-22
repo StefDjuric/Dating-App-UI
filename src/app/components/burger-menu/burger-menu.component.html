@@ -12,7 +12,7 @@
 
     <!-- Menu Overlay -->
     <div
-      [ngClass]="{ 'fixed inset-0 overlay-opacity z-40': isOpen }"
+      [ngClass]="{ 'fixed inset-0 overlay-opacity z-50': isOpen }"
       (click)="closeMenu()"
     >
       <!-- Nav Links -->
@@ -36,7 +36,11 @@
             <p
               class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
             >
-              <a [href]="link.href">{{ link.text }}</a>
+              <a
+                [routerLink]="[link.href]"
+                routerLinkActive="router-link-active"
+                >{{ link.text }}</a
+              >
             </p>
           </li>
 
@@ -47,7 +51,11 @@
             <p
               class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
             >
-              <a [href]="link.href">{{ link.text }}</a>
+              <a
+                [routerLink]="[link.href]"
+                routerLinkActive="router-link-active"
+                >{{ link.text }}</a
+              >
             </p>
           </li>
           } }
@@ -63,16 +71,20 @@
           } @else {
 
           <li class="mt-10">
-            <app-button
-              text="Log In"
-              styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full"
-            ></app-button>
+            <a [routerLink]="['/login']" routerLinkActive="router-link-active">
+              <app-button
+                text="Log In"
+                styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full"
+              ></app-button>
+            </a>
           </li>
           <li>
-            <app-button
-              text="Sign Up"
-              styling="rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-full"
-            ></app-button>
+            <a [routerLink]="['/signup']" routerLinkActive="router-link-active">
+              <app-button
+                text="Sign Up"
+                styling="rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-full"
+              ></app-button>
+            </a>
           </li>
           }
         </ul>
