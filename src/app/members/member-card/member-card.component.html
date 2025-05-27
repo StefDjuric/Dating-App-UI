@@ -1,0 +1,51 @@
+<div
+  class="flex flex-col justify-between items-start border-2 border-black rounded-lg h-[270px] w-[200px] shadow-lg"
+>
+  <!-- Card Image Div -->
+  <div class="w-full overflow-hidden relative group">
+    <img
+      class="rounded-lg enlarge"
+      [src]="member().photoUrl || './assets/user.png'"
+      [alt]="member().knownAs"
+      width="200"
+    />
+    <ul
+      class="flex justify-center items-center gap-1 absolute bottom-[-30%] left-0 right-0 mx-auto opacity-0 group-hover:bottom-2 group-hover:opacity-100 transition-all duration-300 ease-in-out text-center"
+    >
+      <li class="">
+        <button
+          routerLink="/members/{{ member().username }}"
+          routerLinkActive="router-link-active"
+          class="rounded-lg px-3 py-2 bg-[#c1121f] hover:bg-[#ef233c] hover:cursor-pointer text-nowrap w-full"
+        >
+          <i class="fa fa-user"></i>
+        </button>
+      </li>
+      <li class="">
+        <button
+          class="rounded-lg px-3 py-2 bg-[#c1121f] hover:bg-[#ef233c] hover:cursor-pointer text-nowrap w-full"
+        >
+          <i class="fa fa-heart"></i>
+        </button>
+      </li>
+      <li class="">
+        <button
+          class="rounded-lg px-3 py-2 bg-[#c1121f] hover:bg-[#ef233c] hover:cursor-pointer text-nowrap w-full"
+        >
+          <i class="fa fa-envelope"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
+  <!-- End of Card Image Div -->
+
+  <!-- Member info -->
+  <div class="flex flex-col items-center justify-center w-full p-1">
+    <div class="flex justify-center items-center gap-3">
+      <i class="fa fa-user"></i>
+      <h6 class="text-xl text-center">{{ member().knownAs }}</h6>
+    </div>
+    <p class="text-lg text-gray-500">{{ member().city }}</p>
+  </div>
+  <!-- End of Member info -->
+</div>

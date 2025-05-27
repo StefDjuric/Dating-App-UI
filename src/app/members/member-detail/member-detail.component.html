@@ -1,1 +1,206 @@
-<p>member-detail works!</p>
+<!--Container -->
+<div
+  class="mx-auto px-6 lg:px-15 3xl:px-0 max-w-[1440px] flex justify-center items-center min-h-screen"
+>
+  @if (member) {
+  <!-- Grid Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+    <!-- Member Basic details Container -->
+    <div
+      class="flex flex-col items-start p-2 gap-3 justify-center border-2 border-gray-500 w-full lg:w-[270px]"
+    >
+      <img
+        src="{{ member.photoUrl || './assets/user.png' }}"
+        alt="{{ member.knownAs }}"
+        width="350px"
+      />
+
+      <!-- Location -->
+      <div class="flex flex-col justify-center">
+        <p class="text-lg"><strong>Location:</strong></p>
+        <p class="text-lg">{{ member.city }}, {{ member.country }}</p>
+      </div>
+      <!-- End of Location -->
+      <!-- Age -->
+      <div class="flex flex-col justify-center">
+        <p class="text-lg"><strong>Age:</strong></p>
+        <p class="text-lg">{{ member.age }}</p>
+      </div>
+      <!-- End of Age -->
+      <!-- Last Active -->
+      <div class="flex flex-col justify-center">
+        <p class="text-lg"><strong>Last Active:</strong></p>
+        <p class="text-lg">{{ member.lastActive }}</p>
+      </div>
+      <!-- End of Last Active -->
+      <!-- Member since -->
+      <div class="flex flex-col justify-center">
+        <p class="text-md lg:text-lg"><strong>Member since:</strong></p>
+        <p class="text-md lg:text-lg">{{ member.createdAt }}</p>
+      </div>
+      <!-- End of Member since -->
+      <!-- Interact buttons -->
+      <div class="flex justify-center items-center gap-2 full">
+        <app-button
+          type="button"
+          text="Like"
+          styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-[120px]"
+        ></app-button>
+        <app-button
+          type="button"
+          text="Message"
+          styling="rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-[120px]"
+        ></app-button>
+      </div>
+      <!-- End of Interact buttons -->
+    </div>
+    <!-- End of Member Basic details container -->
+
+    <!-- Tab Section -->
+    <div
+      class="col-span-3 border-2 border-gray-500 p-4 w-screen lg:w-full mb-4"
+    >
+      <!-- Tab Navigation -->
+      <div class="flex border-b border-gray-300 mb-4">
+        <button
+          class="tab-button px-4 py-2 mr-2 font-medium text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-400 hover:cursor-pointer focus:outline-none"
+          [class.active]="activeTab === 'about'"
+          (click)="setActiveTab('about')"
+        >
+          About {{ member.knownAs }}
+        </button>
+        <button
+          class="tab-button px-4 py-2 mr-2 font-medium text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-400 hover:cursor-pointer focus:outline-none"
+          [class.active]="activeTab === 'interests'"
+          (click)="setActiveTab('interests')"
+        >
+          Interests
+        </button>
+        <button
+          class="tab-button px-4 py-2 mr-2 font-medium text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-400 hover:cursor-pointer focus:outline-none"
+          [class.active]="activeTab === 'photos'"
+          (click)="setActiveTab('photos')"
+        >
+          Photos
+        </button>
+        <button
+          class="tab-button px-4 py-2 mr-2 font-medium text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-400 hover:cursor-pointer focus:outline-none"
+          [class.active]="activeTab === 'messages'"
+          (click)="setActiveTab('messages')"
+        >
+          Messages
+        </button>
+      </div>
+      <!-- End of Tab Navigation -->
+
+      <!-- Tab Content -->
+      <div class="tab-content min-h-[400px]">
+        @if (activeTab === 'about') {
+        <!-- About Tab pane -->
+        <div class="tab-pane">
+          <h3 class="text-xl font-semibold mb-4">About {{ member.knownAs }}</h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="font-medium text-gray-700 mb-2">Description:</h4>
+              <p class="text-gray-600">
+                {{ member.introduction || "No description available" }}
+              </p>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-700 mb-2">Looking For:</h4>
+              <p class="text-gray-600">
+                {{ member.lookingFor || "Not specified" }}
+              </p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <h4 class="font-medium text-gray-700 mb-2">Gender:</h4>
+                <p class="text-gray-600">
+                  {{ member.gender || "Not specified" }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End of About Tab pane -->
+        } @else if (activeTab === 'interests') {
+        <!-- Interests Tab Pane -->
+        <div class="tab-pane">
+          <h3 class="text-xl font-semibold mb-4">Interests</h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="font-medium text-gray-700 mb-2">
+                Hobbies & Interests:
+              </h4>
+              <p class="text-gray-600">
+                {{ member.interests || "No interests listed" }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- End of Interests Tab Pane -->
+
+        } @else if(activeTab === 'Photos') {
+        <!-- Photos Tab Pane -->
+        <div class="tab-pane">
+          <h3 class="text-xl font-semibold mb-4">Photos</h3>
+          <!-- Photos grid -->
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Main photo -->
+            <div class="relative">
+              <img
+                src="{{ member.photoUrl || './assets/user.png' }}"
+                alt="{{ member.knownAs }}"
+                class="w-full h-48 object-cover rounded-lg"
+              />
+              <span
+                class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs rounded"
+                >Main</span
+              >
+            </div>
+            <!-- Additional photos if available -->
+            @for (photo of member.photos; track member.id) {
+            <div class="relative">
+              <img
+                src="{{ photo.url }}"
+                alt="Photo"
+                class="w-full h-48 object-cover rounded-lg"
+              />
+            </div>
+            }
+
+            <!-- Placeholder if no additional photos -->
+            @if (!member.photos || member.photos.length === 0) {
+            <div
+              class="flex items-center justify-center h-48 bg-gray-200 rounded-lg"
+            >
+              <p class="text-gray-500">No additional photos</p>
+            </div>
+            }
+          </div>
+          <!-- End of Photos grid -->
+        </div>
+        <!-- End of Photos Tab Pane -->
+        } @else if(activeTab === 'messages'){
+        <div class="tab-pane">
+          <h3 class="text-xl font-semibold mb-4">Messages</h3>
+          <div class="space-y-4">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <p class="text-gray-600">Message functionality would go here.</p>
+              <p class="text-sm text-gray-500 mt-2">
+                This could include a message thread, compose message form, etc.
+              </p>
+            </div>
+            <!-- Message thread would go here -->
+          </div>
+        </div>
+        }
+      </div>
+      <!-- End of Tab Content -->
+    </div>
+    <!-- End of Tab Section -->
+  </div>
+  <!-- End of Grid Layout -->
+  }
+</div>
+<!-- End of Container -->

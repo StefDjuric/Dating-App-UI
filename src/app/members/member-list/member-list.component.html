@@ -1,1 +1,9 @@
-<p>member-list works!</p>
+<div
+  class="mx-auto px-6 lg:px-15 3xl:px-0 max-w-[1440px] flex justify-center items-center min-h-screen"
+>
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
+    @for (member of members; track member.id) {
+    <app-member-card [member]="member"></app-member-card>
+    }
+  </div>
+</div>

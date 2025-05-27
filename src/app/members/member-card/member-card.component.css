@@ -1,0 +1,9 @@
+.enlarge:hover {
+  transform: scale(1.2, 1.2);
+  transition: all 500ms ease-out;
+}
+
+.enlarge {
+  transform: scale(1, 1);
+  transition: all 500ms ease-out;
+}
