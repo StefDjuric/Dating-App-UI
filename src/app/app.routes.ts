@@ -11,6 +11,8 @@ import { ContactComponent } from './components/contact/contact.component';
 import { authGuard } from './guards/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ServerErrorComponent } from './components/server-error/server-error.component';
+import { EditMemberDetailsComponent } from './members/edit-member-details/edit-member-details.component';
+import { preventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
 
 export const routes: Routes = [
   {
@@ -26,6 +28,11 @@ export const routes: Routes = [
       {
         path: 'members/:username',
         component: MemberDetailComponent,
+      },
+      {
+        path: 'member/edit',
+        component: EditMemberDetailsComponent,
+        canDeactivate: [preventUnsavedChangesGuard],
       },
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },

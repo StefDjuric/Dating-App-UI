@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Member } from '../models/Member';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,16 +10,33 @@ import { Observable } from 'rxjs';
 export class MembersService {
   private http = inject(HttpClient);
   private baseUrl = environment.baseUrl;
+  members = signal<Member[]>([]);
 
-  getMembers(): Observable<Member[]> {
-    return this.http.get<Member[]>(this.baseUrl + 'users');
+  getMembers() {
+    return this.http.get<Member[]>(this.baseUrl + 'users').subscribe({
+      next: (response) => this.members.set(response),
+    });
   }
 
   getMemberById(id: number): Observable<Member> {
     return this.http.get<Member>(this.baseUrl + `users/${id}`);
   }
 
-  getMembersByUsername(username: string): Observable<Member> {
+  getMemberByUsername(username: string): Observable<Member> {
+    const member = this.members().find((m) => m.username === username);
+
+    if (member !== undefined) return of(member);
+
     return this.http.get<Member>(this.baseUrl + `users/${username}`);
+  }
+
+  updateUserDetails(model: Member) {
+    return this.http.put(this.baseUrl + 'users/edit-member', model).pipe(
+      tap(() => {
+        this.members.update((members) =>
+          members.map((m) => (m.username === model.username ? model : m))
+        );
+      })
+    );
   }
 }

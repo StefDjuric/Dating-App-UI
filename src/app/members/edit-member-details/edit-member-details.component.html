@@ -1,0 +1,227 @@
+<!--Container -->
+<div
+  class="mx-auto px-6 lg:px-15 3xl:px-0 max-w-[1440px] flex justify-center items-center min-h-screen w-full"
+>
+  @if (member) {
+  <!-- Grid Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+    <!-- Member Basic details Container -->
+    <div
+      class="flex flex-col items-start p-2 gap-3 justify-center border-2 border-gray-500 w-full lg:w-[270px]"
+    >
+      <img
+        src="{{ member.photoUrl || './assets/user.png' }}"
+        alt="{{ member.knownAs }}"
+        width="350px"
+      />
+
+      <!-- Location -->
+      <div class="flex flex-col justify-center">
+        <p class="text-lg"><strong>Location:</strong></p>
+        <p class="text-lg">{{ member.city }}, {{ member.country }}</p>
+      </div>
+      <!-- End of Location -->
+      <!-- Age -->
+      <div class="flex flex-col justify-center">
+        <p class="text-lg"><strong>Age:</strong></p>
+        <p class="text-lg">{{ member.age }}</p>
+      </div>
+      <!-- End of Age -->
+      <!-- Last Active -->
+      <div class="flex flex-col justify-center">
+        <p class="text-lg"><strong>Last Active:</strong></p>
+        <p class="text-lg">{{ member.lastActive }}</p>
+      </div>
+      <!-- End of Last Active -->
+      <!-- Member since -->
+      <div class="flex flex-col justify-center">
+        <p class="text-md lg:text-lg"><strong>Member since:</strong></p>
+        <p class="text-md lg:text-lg">{{ member.createdAt }}</p>
+      </div>
+      <!-- End of Member since -->
+      <!-- Interact buttons -->
+      <div class="flex justify-center items-center gap-2 full">
+        <button
+          form="editForm"
+          type="submit"
+          class="rounded-lg px-4 py-2 bg-[#212529] text-white disabled:cursor-not-allowed hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-[250px]"
+          (clicked)="updateProfile()"
+        >
+          Save Changes
+        </button>
+      </div>
+      <!-- End of Interact buttons -->
+    </div>
+    <!-- End of Member Basic details container -->
+
+    <!-- Tab Section -->
+    <div
+      class="col-span-3 border-2 border-gray-500 p-4 w-screen lg:w-full mb-4"
+    >
+      <!-- Warning section -->
+      @if (false) {
+      <div
+        class="p-5 bg-[#c1121f] text-white mb-2 flex justify-center items-center"
+      >
+        <p>
+          <strong>Important:</strong>You have made changes. Any unsaved changes
+          will be lost.
+        </p>
+      </div>
+      }
+
+      <!-- End of Warning section -->
+
+      <!-- Tab Navigation -->
+      <div class="flex border-b border-gray-300 mb-4">
+        <button
+          class="tab-button px-4 py-2 mr-2 font-medium text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-400 hover:cursor-pointer focus:outline-none"
+          [class.active]="activeTab === 'edit-info'"
+          (click)="setActiveTab('edit-info')"
+        >
+          Edit information
+        </button>
+        <button
+          class="tab-button px-4 py-2 mr-2 font-medium text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-400 hover:cursor-pointer focus:outline-none"
+          [class.active]="activeTab === 'edit-photos'"
+          (click)="setActiveTab('edit-photos')"
+        >
+          Edit photos
+        </button>
+      </div>
+      <!-- End of Tab Navigation -->
+
+      <!-- Tab Content -->
+      <div class="tab-content min-h-[400px]">
+        @if (activeTab === 'edit-info') {
+        <!-- Edit Info pane -->
+        <div class="tab-pane">
+          <h3 class="text-xl font-semibold mb-4">Edit information</h3>
+          <form
+            id="editForm"
+            #editForm="ngForm"
+            (ngSubmit)="updateProfile()"
+            class="space-y-4"
+          >
+            @if (editForm.dirty) {
+            <div
+              class="p-5 bg-[#c1121f] text-white mb-2 flex justify-center items-center"
+            >
+              <p>
+                <strong>Important:</strong>You have made changes. Any unsaved
+                changes will be lost.
+              </p>
+            </div>
+            }
+            <div>
+              <h4 class="font-medium text-gray-700 mb-2">Description:</h4>
+              <textarea
+                name="introduction"
+                class="w-full p-2 outline-[#c1121f] border-2 border-gray-500 rounded-lg"
+                [(ngModel)]="member.introduction"
+                rows="6"
+                >{{ member.introduction }}</textarea
+              >
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-700 mb-2">Looking for:</h4>
+              <textarea
+                name="lookingFor"
+                class="w-full p-2 outline-[#c1121f] border-2 border-gray-500 rounded-lg"
+                [(ngModel)]="member.lookingFor"
+                rows="6"
+                >{{ member.lookingFor }}</textarea
+              >
+            </div>
+
+            <div>
+              <h4 class="font-medium text-gray-700 mb-2">Interests:</h4>
+              <textarea
+                name="interests"
+                class="w-full p-2 outline-[#c1121f] border-2 border-gray-500 rounded-lg"
+                [(ngModel)]="member.interests"
+                rows="6"
+                >{{ member.interests }}</textarea
+              >
+            </div>
+            <div class="flex flex-col justify-between">
+              <h4 class="font-medium text-gray-700 mb-2">Location Details:</h4>
+              <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center gap-3">
+                  <Label for="city-details">City:</Label>
+                  <input
+                    type="text"
+                    id="city-details"
+                    class="px-2 py-1 border-2 border-black rounded-lg"
+                    name="city"
+                    [value]="member.city"
+                    [(ngModel)]="member.city"
+                  />
+                </div>
+                <div class="flex justify-between items-center gap-3">
+                  <Label for="country-details">Country:</Label>
+                  <input
+                    type="text"
+                    id="country-details"
+                    name="country"
+                    class="px-2 py-1 border-2 border-black rounded-lg"
+                    [value]="member.country"
+                    [(ngModel)]="member.country"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- End of Edit info Tab pane -->
+        } @else if(activeTab === 'edit-photos') {
+        <!-- Edit Photos Tab Pane -->
+        <div class="tab-pane">
+          <h3 class="text-xl font-semibold mb-4">Photos</h3>
+          <!-- Photos grid -->
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Main photo -->
+            <div class="relative">
+              <img
+                src="{{ member.photoUrl || './assets/user.png' }}"
+                alt="{{ member.knownAs }}"
+                class="w-full h-48 object-cover rounded-lg"
+              />
+              <span
+                class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs rounded"
+                >Main</span
+              >
+            </div>
+            <!-- Additional photos if available -->
+            @for (photo of member.photos; track member.id) {
+            <div class="relative">
+              <img
+                src="{{ photo.url }}"
+                alt="Photo"
+                class="w-full h-48 object-cover rounded-lg"
+              />
+            </div>
+            }
+
+            <!-- Placeholder if no additional photos -->
+            @if (!member.photos || member.photos.length === 0) {
+            <div
+              class="flex items-center justify-center h-48 bg-gray-200 rounded-lg"
+            >
+              <p class="text-gray-500">No additional photos</p>
+            </div>
+            }
+          </div>
+          <!-- End of Photos grid -->
+        </div>
+        <!-- End of Edit Photos Tab Pane -->
+        }
+      </div>
+      <!-- End of Tab Content -->
+    </div>
+    <!-- End of Tab Section -->
+  </div>
+  <!-- End of Grid Layout -->
+  }
+</div>
+<!-- End of Container -->
