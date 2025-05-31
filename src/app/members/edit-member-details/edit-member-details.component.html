@@ -10,8 +10,8 @@
       class="flex flex-col items-start p-2 gap-3 justify-center border-2 border-gray-500 w-full lg:w-[270px]"
     >
       <img
-        src="{{ member.photoUrl || './assets/user.png' }}"
-        alt="{{ member.knownAs }}"
+        [src]="member.photoUrl || './assets/user.png'"
+        [alt]="member.knownAs"
         width="350px"
       />
 
@@ -40,12 +40,12 @@
       </div>
       <!-- End of Member since -->
       <!-- Interact buttons -->
-      <div class="flex justify-center items-center gap-2 full">
+      <div class="flex justify-center items-center gap-2 w-full">
         <button
           form="editForm"
           type="submit"
           class="rounded-lg px-4 py-2 bg-[#212529] text-white disabled:cursor-not-allowed hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-[250px]"
-          (clicked)="updateProfile()"
+          (click)="updateProfile()"
         >
           Save Changes
         </button>
@@ -59,12 +59,12 @@
       class="col-span-3 border-2 border-gray-500 p-4 w-screen lg:w-full mb-4"
     >
       <!-- Warning section -->
-      @if (false) {
+      @if (editForm?.dirty) {
       <div
         class="p-5 bg-[#c1121f] text-white mb-2 flex justify-center items-center"
       >
         <p>
-          <strong>Important:</strong>You have made changes. Any unsaved changes
+          <strong>Important:</strong> You have made changes. Any unsaved changes
           will be lost.
         </p>
       </div>
@@ -103,16 +103,6 @@
             (ngSubmit)="updateProfile()"
             class="space-y-4"
           >
-            @if (editForm.dirty) {
-            <div
-              class="p-5 bg-[#c1121f] text-white mb-2 flex justify-center items-center"
-            >
-              <p>
-                <strong>Important:</strong>You have made changes. Any unsaved
-                changes will be lost.
-              </p>
-            </div>
-            }
             <div>
               <h4 class="font-medium text-gray-700 mb-2">Description:</h4>
               <textarea
@@ -148,7 +138,7 @@
               <h4 class="font-medium text-gray-700 mb-2">Location Details:</h4>
               <div class="flex justify-between items-center">
                 <div class="flex justify-between items-center gap-3">
-                  <Label for="city-details">City:</Label>
+                  <label for="city-details">City:</label>
                   <input
                     type="text"
                     id="city-details"
@@ -159,7 +149,7 @@
                   />
                 </div>
                 <div class="flex justify-between items-center gap-3">
-                  <Label for="country-details">Country:</Label>
+                  <label for="country-details">Country:</label>
                   <input
                     type="text"
                     id="country-details"
@@ -179,27 +169,36 @@
         <div class="tab-pane">
           <h3 class="text-xl font-semibold mb-4">Photos</h3>
           <!-- Photos grid -->
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Main photo -->
-            <div class="relative">
+          <div class="grid grid-cols-5 md:grid-cols-5 gap-4">
+            <!-- Additional photos if available -->
+            @for (photo of member.photos; track photo.id) {
+            <div class="flex flex-col gap-2 relative">
               <img
-                src="{{ member.photoUrl || './assets/user.png' }}"
-                alt="{{ member.knownAs }}"
+                [src]="photo.url || './assets/user.png'"
+                [alt]="member.knownAs"
                 class="w-full h-48 object-cover rounded-lg"
               />
+              <div class="flex justify-center items-center gap-1">
+                <app-button
+                  type="button"
+                  text="Main"
+                  styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full"
+                  (clicked)="setMainPhoto(photo.id)"
+                ></app-button>
+                <button
+                  type="button"
+                  class="bg-[#c1121f] px-4 py-3 hover:bg-[#ef233c] hover:cursor-pointer text-sm text-white"
+                  (click)="deletePhoto(photo.id)"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+              @if (photo.isMain) {
               <span
                 class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs rounded"
                 >Main</span
               >
-            </div>
-            <!-- Additional photos if available -->
-            @for (photo of member.photos; track member.id) {
-            <div class="relative">
-              <img
-                src="{{ photo.url }}"
-                alt="Photo"
-                class="w-full h-48 object-cover rounded-lg"
-              />
+              }
             </div>
             }
 
@@ -211,6 +210,310 @@
               <p class="text-gray-500">No additional photos</p>
             </div>
             }
+          </div>
+
+          <div class="flex flex-wrap -mx-3 mt-6">
+            <div class="w-full md:w-1/4 px-3">
+              <h3 class="text-lg font-semibold mb-4">Select files</h3>
+
+              <div
+                ng2FileDrop
+                [ngClass]="{
+                  'border-blue-400 bg-blue-50': hasBaseDropzoneOver
+                }"
+                (fileOver)="fileOverBase($event)"
+                [uploader]="uploader"
+                class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer mb-4"
+              >
+                Base drop zone
+              </div>
+
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Multiple</label
+                >
+                <input
+                  type="file"
+                  ng2FileSelect
+                  [uploader]="uploader"
+                  multiple
+                  class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Single</label
+                >
+                <input
+                  type="file"
+                  ng2FileSelect
+                  [uploader]="uploader"
+                  class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+              </div>
+            </div>
+
+            <div class="w-full md:w-3/4 px-3 mb-10">
+              <h3 class="text-lg font-semibold mb-4">Upload queue</h3>
+              <p class="mb-4">Queue length: {{ uploader?.queue?.length }}</p>
+
+              <div class="overflow-x-auto">
+                <table
+                  class="min-w-full bg-white border border-gray-200 rounded-lg"
+                >
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th
+                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/2"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Size
+                      </th>
+                      <th
+                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Progress
+                      </th>
+                      <th
+                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Status
+                      </th>
+                      <th
+                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    @for (item of uploader?.queue; track $index) {
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <strong class="font-semibold text-gray-900">{{
+                          item?.file?.name
+                        }}</strong>
+                      </td>
+                      <td
+                        *ngIf="uploader?.options?.isHTML5"
+                        class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        {{ item?.file?.size / 1024 / 1024 | number : "1.2-2" }}
+                        MB
+                      </td>
+                      <td
+                        *ngIf="uploader?.options?.isHTML5"
+                        class="px-4 py-3 whitespace-nowrap"
+                      >
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            class="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                            [ngStyle]="{ width: item.progress + '%' }"
+                          ></div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap text-center">
+                        <span
+                          *ngIf="item.isSuccess"
+                          class="inline-flex items-center justify-center w-5 h-5 text-green-500"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </span>
+                        <span
+                          *ngIf="item.isCancel"
+                          class="inline-flex items-center justify-center w-5 h-5 text-yellow-500"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </span>
+                        <span
+                          *ngIf="item.isError"
+                          class="inline-flex items-center justify-center w-5 h-5 text-red-500"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </span>
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap text-sm space-x-2">
+                        <button
+                          type="button"
+                          class="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                          (click)="item.upload()"
+                          [disabled]="
+                            item.isReady || item.isUploading || item.isSuccess
+                          "
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                          Upload
+                        </button>
+                        <button
+                          type="button"
+                          class="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-yellow-600 rounded hover:bg-yellow-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                          (click)="item.cancel()"
+                          [disabled]="!item.isUploading"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          class="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700 transition-colors"
+                          (click)="item.remove()"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"
+                              clip-rule="evenodd"
+                            ></path>
+                            <path
+                              fill-rule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414L7.586 12l-1.293 1.293a1 1 0 101.414 1.414L9 13.414l1.293 1.293a1 1 0 001.414-1.414L10.414 12l1.293-1.293z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="mt-6">
+                <div class="mb-4">
+                  <p class="text-sm text-gray-600 mb-2">Queue progress:</p>
+                  <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div
+                      class="bg-blue-500 h-3 rounded-full transition-all duration-300"
+                      [ngStyle]="{ width: uploader?.progress + '%' }"
+                    ></div>
+                  </div>
+                </div>
+                <div class="space-x-2">
+                  <button
+                    type="button"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                    (click)="uploader?.uploadAll()"
+                    [disabled]="!uploader?.getNotUploadedItems()?.length"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Upload all
+                  </button>
+                  <button
+                    type="button"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-yellow-600 rounded-lg hover:bg-yellow-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                    (click)="uploader?.cancelAll()"
+                    [disabled]="!uploader?.isUploading"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Cancel all
+                  </button>
+                  <button
+                    type="button"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                    (click)="uploader?.clearQueue()"
+                    [disabled]="!uploader?.queue?.length"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"
+                        clip-rule="evenodd"
+                      ></path>
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414L7.586 12l-1.293 1.293a1 1 0 101.414 1.414L9 13.414l1.293 1.293a1 1 0 001.414-1.414L10.414 12l1.293-1.293z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Remove all
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- End of Photos grid -->
         </div>

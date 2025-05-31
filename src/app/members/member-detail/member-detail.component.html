@@ -140,26 +140,14 @@
         </div>
         <!-- End of Interests Tab Pane -->
 
-        } @else if(activeTab === 'Photos') {
+        } @else if(activeTab === 'photos') {
         <!-- Photos Tab Pane -->
         <div class="tab-pane">
           <h3 class="text-xl font-semibold mb-4">Photos</h3>
           <!-- Photos grid -->
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Main photo -->
-            <div class="relative">
-              <img
-                src="{{ member.photoUrl || './assets/user.png' }}"
-                alt="{{ member.knownAs }}"
-                class="w-full h-48 object-cover rounded-lg"
-              />
-              <span
-                class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs rounded"
-                >Main</span
-              >
-            </div>
             <!-- Additional photos if available -->
-            @for (photo of member.photos; track member.id) {
+            @for (photo of member.photos; track photo.id) {
             <div class="relative">
               <img
                 src="{{ photo.url }}"
