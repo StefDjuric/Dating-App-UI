@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { User } from '../models/User';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
+import { RegisterDTO } from '../models/RegisterDTO';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +14,7 @@ export class AccountService {
   private router = inject(Router);
   currentUser = signal<User | null>(null);
 
-  login(model: { username: string; password: string }) {
+  login(model: { usernameOrEmail: string; password: string }) {
     return this.http
       .post<User>(this.baseUrl + 'accountmanager/login', model)
       .pipe(
@@ -27,9 +28,13 @@ export class AccountService {
       );
   }
 
-  register(model: { username: string; email: string; password: string }) {
+  register(model: RegisterDTO) {
     return this.http
-      .post<User>(this.baseUrl + 'accountmanager/register', model)
+      .post<User>(this.baseUrl + 'accountmanager/register', model, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       .pipe(
         map((user) => {
           if (user) {

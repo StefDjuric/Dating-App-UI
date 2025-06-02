@@ -9,22 +9,48 @@
     <h1 class="text-3xl text-center">Sign Up</h1>
     <!-- Form Inputs -->
     <form
-      #registerForm="ngForm"
+      [formGroup]="registerForm"
       (ngSubmit)="register()"
       autocomplete="off"
       novalidate
       class="flex flex-col justify-center items-center mt-4 gap-4"
     >
+      <!-- Validation errors -->
+      @if (validationErrors) {
+      <div class="p-4 bg-red-300 text-white">
+        <ul>
+          @for (error of validationErrors; track $index) {
+          <li>{{ error }}</li>
+          }
+        </ul>
+      </div>
+      }
+      <!-- End of Validation errors -->
+
       <!-- Email Input -->
       <div class="flex flex-col gap-2">
         <label for="signup-email" class="text-lg">Email</label>
         <input
-          name="email"
-          [(ngModel)]="model.email"
+          formControlName="email"
           type="email"
           id="signup-email"
-          class="px-2 py-1 rounded-lg border-2 border-black"
+          [ngClass]="
+            registerForm.get('email')?.errors &&
+            registerForm.get('email')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
         />
+        <p
+          [ngClass]="
+            registerForm.get('email')?.errors &&
+            registerForm.get('email')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          Email must be valid.
+        </p>
       </div>
       <!-- End of Email Input -->
 
@@ -32,12 +58,26 @@
       <div class="flex flex-col gap-2">
         <label for="signup-username" class="text-lg">Username</label>
         <input
-          name="username"
-          [(ngModel)]="model.username"
+          formControlName="username"
           type="text"
           id="signup-username"
-          class="px-2 py-1 rounded-lg border-2 border-black"
+          [ngClass]="
+            registerForm.get('username')?.errors &&
+            registerForm.get('username')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
         />
+        <p
+          [ngClass]="
+            registerForm.get('username')?.errors &&
+            registerForm.get('username')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          Username must be at least 4 characters.
+        </p>
       </div>
       <!-- End of Username Input -->
 
@@ -45,18 +85,187 @@
       <div class="flex flex-col gap-2">
         <label for="signup-password" class="text-lg">Password</label>
         <input
-          name="password"
-          [(ngModel)]="model.password"
+          formControlName="password"
           type="password"
           id="signup-password"
-          class="px-2 py-1 rounded-lg border-2 border-black"
+          [ngClass]="
+            registerForm.get('password')?.errors &&
+            registerForm.get('password')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
         />
+        <p
+          [ngClass]="
+            registerForm.get('password')?.errors &&
+            registerForm.get('password')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          Password must be at least 8 characters
+        </p>
       </div>
       <!-- End of Password Input -->
+
+      <!-- Confirm Password Input -->
+      <div class="flex flex-col gap-2">
+        <label for="confirm-signup-password" class="text-lg"
+          >Confirm password</label
+        >
+        <input
+          formControlName="confirmPassword"
+          type="password"
+          id="confirm-signup-password"
+          [ngClass]="
+            registerForm.get('confirmPassword')?.errors &&
+            registerForm.get('confirmPassword')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
+        />
+        <p
+          [ngClass]="
+            registerForm.get('confirmPassword')?.errors &&
+            registerForm.get('confirmPassword')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          Passwords have to match
+        </p>
+      </div>
+      <!-- End of Confirm Password Input -->
+
+      <!-- Gender Input -->
+      <div class="flex flex-col gap-2">
+        <p class="text-lg">Gender</p>
+        <!-- Male gender-->
+        <div class="flex justify-center items-center gap-1">
+          <label for="male-signup-gender">Male</label>
+          <input
+            type="radio"
+            id="male-signup-gender"
+            value="male"
+            formControlName="gender"
+          />
+        </div>
+        <!-- End of Male gender-->
+        <!-- Female gender-->
+        <div class="flex justify-center items-center gap-1">
+          <label for="female-signup-gender">Female</label>
+          <input
+            type="radio"
+            id="female-signup-gender"
+            value="female"
+            formControlName="gender"
+          />
+        </div>
+        <!-- End of Female gender-->
+      </div>
+      <!-- End of Gender Input -->
+
+      <!-- Date of Birth -->
+      <div class="flex flex-col gap-2">
+        <label for="dateOfBirth" class="text-lg">Date of birth</label>
+        <input type="date" formControlName="dateOfBirth" id="dateOfBirth" />
+        <p
+          [ngClass]="
+            registerForm.get('knownAs')?.errors &&
+            registerForm.get('knownAs')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          This field is required.
+        </p>
+      </div>
+
+      <!-- End of Date of Birth -->
+
+      <!-- KnownAs Input -->
+      <div class="flex flex-col gap-2">
+        <label for="knownAs" class="text-lg">Known as</label>
+        <input
+          formControlName="knownAs"
+          type="text"
+          id="knownAs"
+          [ngClass]="
+            registerForm.get('knownAs')?.errors &&
+            registerForm.get('knownAs')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
+        />
+        <p
+          [ngClass]="
+            registerForm.get('knownAs')?.errors &&
+            registerForm.get('knownAs')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          This field is required.
+        </p>
+      </div>
+      <!-- End of knownAs Input -->
+      <!-- City Input -->
+      <div class="flex flex-col gap-2">
+        <label for="city" class="text-lg">City</label>
+        <input
+          formControlName="city"
+          type="text"
+          id="city"
+          [ngClass]="
+            registerForm.get('city')?.errors &&
+            registerForm.get('city')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
+        />
+        <p
+          [ngClass]="
+            registerForm.get('city')?.errors &&
+            registerForm.get('city')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          This field is required.
+        </p>
+      </div>
+      <!-- End of city Input -->
+      <!-- Country Input -->
+      <div class="flex flex-col gap-2">
+        <label for="country" class="text-lg">Country</label>
+        <input
+          formControlName="country"
+          type="text"
+          id="country"
+          [ngClass]="
+            registerForm.get('country')?.errors &&
+            registerForm.get('country')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
+        />
+        <p
+          [ngClass]="
+            registerForm.get('country')?.errors &&
+            registerForm.get('country')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          This field is required.
+        </p>
+      </div>
+      <!-- End of city Input -->
 
       <app-button
         type="submit"
         text="Sign Up"
+        [disabled]="!registerForm.valid"
         styling="mt-4 min-w-[230px] text-center rounded-full px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap w-full"
       ></app-button>
     </form>

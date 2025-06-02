@@ -9,22 +9,48 @@
     <h1 class="text-center text-3xl">Log In</h1>
     <!-- Login Form -->
     <form
-      #loginForm="ngForm"
+      [formGroup]="loginForm"
       (ngSubmit)="login()"
       class="flex flex-col justify-center items-center gap-4"
       novalidate
       autocomplete="off"
     >
+      <!-- Validation errors -->
+      @if (validationErrors && validationErrors.length > 0) {
+      <div class="p-4 bg-red-300 text-white">
+        <ul>
+          @for (error of validationErrors; track $index) {
+          <li>{{ error }}</li>
+          }
+        </ul>
+      </div>
+      }
+      <!-- End of Validation errors -->
+
       <!-- EmailOrUsername Input -->
       <div class="flex flex-col gap-2">
         <label for="emailOrUsername" class="text-lg"> Email or Username</label>
         <input
           type="text"
-          name="emailOrUsername"
-          [(ngModel)]="model.emailOrUsername"
+          formControlName="emailOrUsername"
           id="emailOrUsername"
-          class="px-2 py-1 border-2 border-black rounded-lg"
+          [ngClass]="
+            loginForm.get('emailOrUsername')?.errors &&
+            loginForm.get('emailOrUsername')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
         />
+        <p
+          [ngClass]="
+            loginForm.get('emailOrUsername')?.errors &&
+            loginForm.get('emailOrUsername')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          Email or username must be valid.
+        </p>
       </div>
       <!-- End of EmailOrUsername Input -->
       <!-- Password Input -->
@@ -38,16 +64,31 @@
         <input
           type="password"
           id="login-password"
-          name="password"
-          [(ngModel)]="model.password"
-          class="px-2 py-1 border-2 border-black rounded-lg"
+          formControlName="password"
+          [ngClass]="
+            loginForm.get('password')?.errors &&
+            loginForm.get('password')?.touched
+              ? 'border-2 border-red-500 outline-red-500 rounded-lg px-2 py-1 w-[300px]'
+              : 'px-2 py-1 rounded-lg border-2 border-black w-[300px]'
+          "
         />
+        <p
+          [ngClass]="
+            loginForm.get('password')?.errors &&
+            loginForm.get('password')?.touched
+              ? 'text-red-500 text-sm'
+              : 'hidden'
+          "
+        >
+          Password must be valid.
+        </p>
       </div>
       <!-- End of Password Input -->
 
       <app-button
         type="submit"
         text="Log In"
+        [disabled]="!loginForm.valid"
         styling="rounded-full px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full mt-5 min-w-[230px]"
       ></app-button>
     </form>
