@@ -30,14 +30,18 @@
       <!-- Last Active -->
       <div class="flex flex-col justify-center">
         <p class="text-lg"><strong>Last Active:</strong></p>
-        <p class="text-lg">{{ member.lastActive }}</p>
+        <p class="text-lg">{{ member.lastActive | date : "longDate" }}</p>
       </div>
+
       <!-- End of Last Active -->
       <!-- Member since -->
       <div class="flex flex-col justify-center">
         <p class="text-md lg:text-lg"><strong>Member since:</strong></p>
-        <p class="text-md lg:text-lg">{{ member.createdAt }}</p>
+        <p class="text-md lg:text-lg">
+          {{ member.createdAt | date : "longDate" }}
+        </p>
       </div>
+
       <!-- End of Member since -->
       <!-- Interact buttons -->
       <div class="flex justify-center items-center gap-2 full">

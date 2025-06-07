@@ -1,9 +1,172 @@
 <div
-  class="mx-auto px-6 lg:px-15 3xl:px-0 max-w-[1440px] flex justify-center items-center min-h-screen"
+  class="mx-auto px-6 lg:px-15 3xl:px-0 max-w-[1440px] flex flex-col justify-center items-center min-h-screen"
 >
+  <!-- Filters section -->
+  <form
+    #form="ngForm"
+    class="flex flex-col justify-between items-center gap-2 my-3 lg:flex-row w-full"
+    (ngSubmit)="GetMembersList()"
+  >
+    <div
+      class="flex flex-col justify-start items-center gap-2 lg:flex-row w-full"
+    >
+      <!-- Min Age -->
+      <div class="flex items-center justify-center gap-2">
+        <label for="minAge" class="text-md text-nowrap"> Age from </label>
+        <input
+          type="number"
+          name="minAge"
+          id="minAge"
+          [(ngModel)]="membersService.userParams().minAge"
+          class="px-4 py-2 border-2 border-black rounded-lg max-w-[100px]"
+        />
+      </div>
+      <!-- Max Age -->
+      <div class="flex items-center justify-center gap-2">
+        <label for="maxAge" class="text-md text-nowrap"> Age to </label>
+        <input
+          type="number"
+          name="maxAge"
+          [(ngModel)]="membersService.userParams().maxAge"
+          id="maxAge"
+          class="px-4 py-2 border-2 border-black rounded-lg max-w-[100px]"
+        />
+      </div>
+      <!-- Show gender -->
+      <div class="flex items-center justify-center gap-2">
+        <label for="gender"> Show: </label>
+        <select
+          name="gender"
+          id="gender"
+          [(ngModel)]="membersService.userParams().gender"
+          class="px-4 py-2 border-2 border-black rounded-lg"
+        >
+          @for (gender of genderList; track gender.value) {
+          <option [value]="gender.value" class="p-2">
+            {{ gender.display }}
+          </option>
+          }
+        </select>
+      </div>
+      <app-button
+        text="Apply Filters"
+        styling="rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap"
+        type="submit"
+      ></app-button>
+      <app-button
+        text="Reset Filters"
+        styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap"
+        type="button"
+        (clicked)="resetFilters()"
+      ></app-button>
+    </div>
+
+    <!-- Sorting buttons -->
+    <div class="flex flex-col lg:flex-row items-center gap-1">
+      <app-button
+        type="button"
+        text="Last Active"
+        (clicked)="GetMembersList('lastActive')"
+        styling="rounded-lg px-4 py-2 bg-[#c1121f] hover:bg-[#ef233c] hover:cursor-pointer text-nowrap"
+      ></app-button>
+      <app-button
+        type="button"
+        name="orderBy"
+        text="Newest Members"
+        (clicked)="GetMembersList('created')"
+        styling="rounded-lg px-4 py-2 bg-[#c1121f] hover:bg-[#ef233c] hover:cursor-pointer text-nowrap"
+      ></app-button>
+    </div>
+    <!-- End of Sorting buttons -->
+  </form>
+  <!-- End of Filters section -->
+
+  <!-- Members grid -->
   <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
-    @for (member of membersService.members(); track member.id) {
+    @for (member of membersService.paginatedResult()?.items; track member.id) {
     <app-member-card [member]="member"></app-member-card>
     }
   </div>
+  <!-- End of Members grid -->
+
+  <!-- Pagination Controls -->
+  @if (membersService.paginatedResult()?.pagination) {
+  <div class="flex flex-col items-center space-y-4 mt-5">
+    <!-- Pagination buttons -->
+    <div class="flex items-center space-x-2">
+      <!-- First page button -->
+      <button
+        (click)="goToPage(1)"
+        [disabled]="
+          membersService.paginatedResult()!.pagination!.currentPage === 1
+        "
+        class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border hover:cursor-pointer border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        First
+      </button>
+
+      <!-- Previous page button -->
+      <button
+        (click)="
+          goToPage(
+            membersService.paginatedResult()!.pagination!.currentPage - 1
+          )
+        "
+        [disabled]="
+          membersService.paginatedResult()!.pagination!.currentPage === 1
+        "
+        class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:cursor-pointer rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Previous
+      </button>
+
+      <!-- Page Numbers -->
+      @for (page of getPageNumbers(); track page) {
+      <button
+        (click)="goToPage(page)"
+        [class]="
+          page === membersService.paginatedResult()!.pagination!.currentPage
+            ? 'px-3 py-2 text-sm font-medium text-white bg-[#c1121f] border border-[#c1121f] rounded-md hover:cursor-pointer'
+            : 'px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:cursor-pointer hover:bg-gray-50'
+        "
+      >
+        {{ page }}
+      </button>
+      }
+
+      <!-- Next Page Button -->
+      <button
+        (click)="
+          goToPage(
+            membersService.paginatedResult()!.pagination!.currentPage + 1
+          )
+        "
+        [disabled]="
+          membersService.paginatedResult()!.pagination!.currentPage ===
+          membersService.paginatedResult()!.pagination!.totalPages
+        "
+        class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 hover:cursor-pointer disabled:cursor-not-allowed"
+      >
+        Next
+      </button>
+
+      <!-- Last Page Button -->
+      <button
+        (click)="
+          goToPage(membersService.paginatedResult()!.pagination!.totalPages)
+        "
+        [disabled]="
+          membersService.paginatedResult()!.pagination!.currentPage ===
+          membersService.paginatedResult()!.pagination!.totalPages
+        "
+        class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:cursor-pointer hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Last
+      </button>
+    </div>
+    <!-- End of Pagination buttons -->
+  </div>
+
+  <!-- End of Pagination Controls -->
+  }
 </div>

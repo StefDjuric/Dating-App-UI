@@ -11,13 +11,26 @@ import { Member } from '../../models/Member';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ButtonComponent } from '../../components/button/button.component';
-import { CommonModule, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import {
+  CommonModule,
+  DatePipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+} from '@angular/common';
 import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-edit-member-details',
-  imports: [FormsModule, ButtonComponent, CommonModule, FileUploadModule],
+  imports: [
+    FormsModule,
+    ButtonComponent,
+    CommonModule,
+    FileUploadModule,
+    DatePipe,
+  ],
   templateUrl: './edit-member-details.component.html',
   styleUrl: './edit-member-details.component.css',
 })

@@ -3,10 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Member } from '../../models/Member';
 import { MembersService } from '../../services/members.service';
 import { ButtonComponent } from '../../components/button/button.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-member-detail',
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, DatePipe],
   standalone: true,
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.css',
