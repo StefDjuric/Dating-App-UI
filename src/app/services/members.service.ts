@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { PaginatedResult } from '../models/Pagination';
 import { UserParams } from '../models/UserParams';
 import { AccountService } from './account.service';
+import { setPaginatedResponse, setPaginationHeaders } from './PaginationHelper';
 
 @Injectable({
   providedIn: 'root',
@@ -29,43 +30,21 @@ export class MembersService {
       Object.values(this.userParams()).join('-')
     );
 
-    if (response) return this.setPaginatedResponse(response);
+    if (response) return setPaginatedResponse(response, this.paginatedResult);
 
-    const params = this.setPaginationHeaders(this.userParams());
+    const params = setPaginationHeaders(this.userParams());
 
     return this.http
       .get<Member[]>(this.baseUrl + 'users', { observe: 'response', params })
       .subscribe({
         next: (response) => {
-          this.setPaginatedResponse(response);
+          setPaginatedResponse(response, this.paginatedResult);
           this.memberCache.set(
             Object.values(this.userParams()).join('-'),
             response
           );
         },
       });
-  }
-
-  private setPaginatedResponse(response: HttpResponse<Member[]>) {
-    this.paginatedResult.set({
-      items: response.body as Member[],
-      pagination: JSON.parse(response.headers.get('Pagination')!),
-    });
-  }
-
-  private setPaginationHeaders(userParams: UserParams) {
-    let params = new HttpParams();
-
-    if (userParams.pageNumber && userParams.pageSize) {
-      params = params.append('pageNumber', userParams.pageNumber.toString());
-      params = params.append('pageSize', userParams.pageSize.toString());
-      params = params.append('minAge', userParams.minAge.toString());
-      params = params.append('maxAge', userParams.maxAge);
-      params = params.append('gender', userParams.gender);
-      params = params.append('orderBy', userParams.orderBy);
-    }
-
-    return params;
   }
 
   getMemberById(id: number): Observable<Member> {
@@ -84,11 +63,6 @@ export class MembersService {
 
   updateUserDetails(model: Member) {
     return this.http.put(this.baseUrl + 'users/edit-member', model).pipe();
-    // tap(() => {
-    //   this.members.update((members) =>
-    //     members.map((m) => (m.username === model.username ? model : m))
-    //   );
-    // })
   }
 
   setMainPhoto(photoId: number) {

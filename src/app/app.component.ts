@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AccountService } from './services/account.service';
 import { NgxSpinnerComponent } from 'ngx-spinner';
+import { LikeService } from './services/like.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { NgxSpinnerComponent } from 'ngx-spinner';
 })
 export class AppComponent {
   private accountService = inject(AccountService);
+  private likeService = inject(LikeService);
 
   ngOnInit(): void {
     this.setCurrentUser();
@@ -23,5 +25,6 @@ export class AppComponent {
     if (!userString) return;
     const user = JSON.parse(userString);
     this.accountService.currentUser.set(user);
+    this.likeService.getLikeIds();
   }
 }

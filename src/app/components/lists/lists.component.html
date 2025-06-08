@@ -1,1 +1,86 @@
-<p>lists works!</p>
+<div
+  class="mx-auto px-6 lg:px-15 3xl:px-0 max-w-[1440px] flex flex-col justify-center items-center min-h-screen"
+>
+  <!-- Toggle Buttons -->
+  <div
+    class="flex flex-col lg:flex-row items-center gap-2 my-3 w-full justify-center"
+  >
+    <button
+      type="button"
+      [class]="
+        predicate === 'liked'
+          ? 'rounded-lg px-4 py-2 bg-[#c1121f] text-white hover:cursor-pointer text-nowrap'
+          : 'rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap'
+      "
+      (click)="setPredicate('liked')"
+    >
+      Members I Like
+    </button>
+    <button
+      type="button"
+      [class]="
+        predicate === 'likedBy'
+          ? 'rounded-lg px-4 py-2 bg-[#c1121f] text-white hover:cursor-pointer text-nowrap'
+          : 'rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap'
+      "
+      (click)="setPredicate('likedBy')"
+    >
+      Who Likes Me
+    </button>
+    <button
+      type="button"
+      [class]="
+        predicate === 'mutual'
+          ? 'rounded-lg px-4 py-2 bg-[#c1121f] text-white hover:cursor-pointer text-nowrap'
+          : 'rounded-lg px-4 py-2 bg-[#6c757d] hover:bg-[#495057] hover:cursor-pointer text-nowrap'
+      "
+      (click)="setPredicate('mutual')"
+    >
+      Mutual Likes
+    </button>
+  </div>
+
+  <!-- Title -->
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ getTitle() }}</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#c1121f]"
+    ></div>
+  </div>
+
+  <!-- Members List -->
+  <div *ngIf="!loading" class="w-full">
+    <div *ngIf="members.length === 0" class="text-center py-12">
+      <div
+        class="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-md mx-auto"
+      >
+        <svg
+          class="mx-auto h-12 w-12 text-gray-400 mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+          ></path>
+        </svg>
+        <p class="text-gray-600">No members found for this category.</p>
+      </div>
+    </div>
+
+    <!-- Members grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
+      @for (member of members; track member.id) {
+      <app-member-card [member]="member"></app-member-card>
+      }
+    </div>
+    <!-- End of Members grid -->
+  </div>
+
+  <!-- End of Members list -->
+</div>

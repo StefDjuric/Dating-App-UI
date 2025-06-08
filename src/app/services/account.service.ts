@@ -5,6 +5,7 @@ import { User } from '../models/User';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { RegisterDTO } from '../models/RegisterDTO';
+import { LikeService } from './like.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,6 +13,7 @@ export class AccountService {
   private http = inject(HttpClient);
   private baseUrl = environment.baseUrl;
   private router = inject(Router);
+  private likeService = inject(LikeService);
   currentUser = signal<User | null>(null);
 
   login(model: { usernameOrEmail: string; password: string }) {
@@ -22,6 +24,7 @@ export class AccountService {
           if (user) {
             localStorage.setItem('user', JSON.stringify(user));
             this.currentUser.set(user);
+            this.likeService.getLikeIds();
           }
           return user;
         })
