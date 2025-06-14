@@ -174,18 +174,18 @@
         </div>
         <!-- End of Photos Tab Pane -->
         } @else if(activeTab === 'messages'){
+        <!-- Messages Tab -->
         <div class="tab-pane">
           <h3 class="text-xl font-semibold mb-4">Messages</h3>
           <div class="space-y-4">
             <div class="bg-gray-50 p-4 rounded-lg">
-              <p class="text-gray-600">Message functionality would go here.</p>
-              <p class="text-sm text-gray-500 mt-2">
-                This could include a message thread, compose message form, etc.
-              </p>
+              <app-member-details-messages
+                [username]="member.username"
+              ></app-member-details-messages>
             </div>
-            <!-- Message thread would go here -->
           </div>
         </div>
+        <!-- End of Messages tab -->
         }
       </div>
       <!-- End of Tab Content -->

@@ -5,7 +5,6 @@ import { LoginComponent } from './components/login/login.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './components/lists/lists.component';
-import { MessagesComponent } from './components/messages/messages.component';
 import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { authGuard } from './guards/auth.guard';
@@ -13,6 +12,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ServerErrorComponent } from './components/server-error/server-error.component';
 import { EditMemberDetailsComponent } from './members/edit-member-details/edit-member-details.component';
 import { preventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
+import { MessageComponent } from './components/message/message.component';
 
 export const routes: Routes = [
   {
@@ -35,7 +35,7 @@ export const routes: Routes = [
         canDeactivate: [preventUnsavedChangesGuard],
       },
       { path: 'lists', component: ListsComponent },
-      { path: 'messages', component: MessagesComponent },
+      { path: 'messages', component: MessageComponent },
     ],
   },
   { path: 'home', component: HomeComponent },

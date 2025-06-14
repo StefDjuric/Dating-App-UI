@@ -32,6 +32,8 @@
       <li class="">
         <button
           class="rounded-lg px-3 py-2 bg-[#c1121f] hover:bg-[#ef233c] hover:cursor-pointer text-nowrap w-full"
+          [routerLink]="['/members/' + member().username]"
+          routerLinkActive="router-link-active"
         >
           <i class="fa fa-envelope"></i>
         </button>

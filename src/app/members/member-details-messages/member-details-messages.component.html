@@ -1,0 +1,65 @@
+<div class="flex flex-col justify-center items-center w-full p-4">
+  @if(messages.length === 0){
+  <p class="p-4 bg-gray-200">No messages yet</p>
+  } @else {
+  <ul class="w-full">
+    <!-- Messages -->
+    @for (message of messages; track message.id) {
+    <div class="flex justify-between items-center p-4 w-full">
+      <!-- Message container -->
+      <div class="flex flex-col gap-1">
+        <small>
+          <span class="fa fa-clock-o">{{
+            message.dateSent | date : "longDate"
+          }}</span>
+          @if (!message.dateRead && message.senderUsername !== username()) {
+          <span class="text-black">(unread)</span>
+          } @else if (message.dateRead && message.senderUsername !== username())
+          {
+          <span class="text-green-500">
+            (read {{ message.dateRead | date : "longDate" }})
+          </span>
+          }
+        </small>
+        <p class="text-lg">
+          {{ message.content }}
+        </p>
+      </div>
+      <!-- End of Message container -->
+
+      <!-- Sender image -->
+      <img
+        [src]="message.senderPhotoUrl || '../../assets/user.png'"
+        [alt]="message.senderUsername"
+        class="rounded-full"
+        width="40"
+      />
+    </div>
+    <!-- End of Messages -->
+    <div class="h-0.5 bg-white w-full"></div>
+    }
+  </ul>
+  }
+  <!-- Send message from -->
+  <form
+    #messageForm="ngForm"
+    (ngSubmit)="sendMessage()"
+    class="flex justify-between items-center w-full mt-4"
+  >
+    <input
+      type="text"
+      placeholder="Send a message"
+      required
+      name="messageContent"
+      [(ngModel)]="messageContent"
+      class="px-4 py-2 rounded-lg border-2 border-black min-w-[80%]"
+    />
+    <app-button
+      text="Send"
+      type="submit"
+      [disabled]="!messageForm.valid"
+      styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap w-full"
+    ></app-button>
+  </form>
+  <!-- End of Send message from -->
+</div>

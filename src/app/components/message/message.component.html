@@ -1,0 +1,107 @@
+<div
+  class="max-w-[1440px] px-6 lg:px-15 3xl:px-0 flex flex-col justify-center items-center"
+>
+  <!-- Navigation Tabs -->
+  <div class="bg-[#212529] flex my-5">
+    <button
+      class="px-6 py-3 text-white font-medium transition-colors hover:cursor-pointer"
+      [class.bg-[#343a40]]="container === 'Unread'"
+      [class.hover:bg-[#343a40]]="container !== 'Unread'"
+      (click)="container = 'Unread'; loadMessages()"
+    >
+      Unread
+    </button>
+    <button
+      class="px-6 py-3 text-white font-medium transition-colors hover:cursor-pointer"
+      [class.bg-[#343a40]]="container === 'Inbox'"
+      [class.hover:bg-[#343a40]]="container !== 'Inbox'"
+      (click)="container = 'Inbox'; loadMessages()"
+    >
+      Inbox
+    </button>
+    <button
+      class="px-6 py-3 text-white font-medium transition-colors hover:cursor-pointer"
+      [class.bg-[#343a40]]="container === 'Outbox'"
+      [class.hover:bg-[#343a40]]="container !== 'Outbox'"
+      (click)="container = 'Outbox'; loadMessages()"
+    >
+      Outbox
+    </button>
+  </div>
+
+  <!-- Message Table -->
+  <div class="overflow-x-auto w-full">
+    <table class="w-full">
+      <thead class="bg-gray-50 border-b">
+        <tr>
+          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+            Message
+          </th>
+          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+            {{ container === "Outbox" ? "To" : "From" }}
+          </th>
+          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+            {{ container === "Outbox" ? "Sent" : "Received" }}
+          </th>
+          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        @for (message of messageService.paginatedResult()?.items; track
+        message.id) {
+        <tr
+          class="hover:bg-gray-50 transition-colors hover:cursor-pointer"
+          [routerLink]="['/members/' + message.senderUsername]"
+          routerLinkActive="router-link-active"
+        >
+          <td class="px-6 py-4">
+            <div class="text-sm text-gray-900">{{ message.content }}</div>
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex items-center">
+              <img
+                class="w-8 h-8 rounded-full mr-3"
+                [src]="
+                  isOutbox
+                    ? message.recipientPhotoUrl || './assets/user.png'
+                    : message.senderPhotoUrl || './assets/user.png'
+                "
+                [alt]="
+                  isOutbox ? message.recipientUsername : message.senderUsername
+                "
+              />
+              <span class="text-sm font-medium text-gray-900">
+                {{
+                  isOutbox ? message.recipientUsername : message.senderUsername
+                }}
+              </span>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-sm text-gray-600">{{
+              message.dateSent | date : "longDate"
+            }}</span>
+          </td>
+          <td class="px-6 py-4" (click)="$event.stopPropagation()">
+            <app-button
+              text="Delete"
+              type="button"
+              (clicked)="deleteMessage(message.id)"
+              styling="bg-red-600 hover:bg-red-700 hover:cursor-pointer text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+            >
+            </app-button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+            No messages found
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
