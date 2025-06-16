@@ -3,4 +3,5 @@ export interface User {
   knownAs: string;
   gender: string;
   token: string;
+  roles: string[];
 }

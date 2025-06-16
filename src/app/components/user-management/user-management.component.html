@@ -1,0 +1,35 @@
+<div class="grid">
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="grid-cols-3">Username</th>
+        <th class="grid-cols-6">Active Roles</th>
+        <th class="grid-cols-3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users; track user.username) {
+      <tr class="text-center">
+        <td>{{ user.username }}</td>
+        <td>{{ user.roles.join(", ") }}</td>
+        <td>
+          <app-button
+            text="Edit Roles"
+            styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap "
+            type="button"
+            (clicked)="openEditRolesModal(user)"
+          ></app-button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Role Edit Modal -->
+<app-edit-roles-modal
+  [isOpen]="isModalOpen"
+  [selectedUser]="selectedUser"
+  (closeModalEvent)="closeModal()"
+  (saveRolesEvent)="editUserRoles($event)"
+></app-edit-roles-modal>

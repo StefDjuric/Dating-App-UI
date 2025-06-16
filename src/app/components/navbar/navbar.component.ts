@@ -4,10 +4,11 @@ import { ButtonComponent } from '../button/button.component';
 import { BurgerMenuComponent } from '../burger-menu/burger-menu.component';
 import { RouterLink } from '@angular/router';
 import { AccountService } from '../../services/account.service';
+import { HasRoleDirective } from '../../directives/has-role.directive';
 
 @Component({
   selector: 'app-navbar',
-  imports: [ButtonComponent, BurgerMenuComponent, RouterLink],
+  imports: [ButtonComponent, BurgerMenuComponent, RouterLink, HasRoleDirective],
   standalone: true,
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',

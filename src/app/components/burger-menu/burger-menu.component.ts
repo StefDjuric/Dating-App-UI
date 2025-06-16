@@ -4,10 +4,11 @@ import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
 import { AccountService } from '../../services/account.service';
 import { RouterLink } from '@angular/router';
+import { HasRoleDirective } from '../../directives/has-role.directive';
 
 @Component({
   selector: 'app-burger-menu',
-  imports: [ButtonComponent, CommonModule, RouterLink],
+  imports: [ButtonComponent, CommonModule, RouterLink, HasRoleDirective],
   standalone: true,
   templateUrl: './burger-menu.component.html',
   styleUrl: './burger-menu.component.css',

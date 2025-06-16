@@ -13,6 +13,8 @@ import { ServerErrorComponent } from './components/server-error/server-error.com
 import { EditMemberDetailsComponent } from './members/edit-member-details/edit-member-details.component';
 import { preventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
 import { MessageComponent } from './components/message/message.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -36,6 +38,11 @@ export const routes: Routes = [
       },
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessageComponent },
+      {
+        path: 'admin',
+        component: AdminPanelComponent,
+        canActivate: [adminGuard],
+      },
     ],
   },
   { path: 'home', component: HomeComponent },

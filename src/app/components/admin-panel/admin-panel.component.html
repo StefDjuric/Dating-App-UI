@@ -1,0 +1,46 @@
+<div class="mx-auto max-w-[1440px] px-6 lg:px-15 3xl:px-0 flex flex-col w-full">
+  <h1 class="text-3xl mb-2">Admin Panel</h1>
+  <!-- Tab Section -->
+  <div class="col-span-3 border-2 border-gray-500 p-4 w-full mb-4">
+    <!-- Tab Navigation -->
+    <div class="flex border-b border-gray-300 mb-4">
+      <button
+        *appHasRole="['Admin', 'Moderator']"
+        class="tab-button px-4 py-2 mr-2 font-medium text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-400 hover:cursor-pointer focus:outline-none"
+        [class.active]="activeTab === 'photoManagement'"
+        (click)="setActiveTab('photoManagement')"
+      >
+        Photo Management
+      </button>
+      <button
+        *appHasRole="['Admin']"
+        class="tab-button px-4 py-2 mr-2 font-medium text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-400 hover:cursor-pointer focus:outline-none"
+        [class.active]="activeTab === 'userManagement'"
+        (click)="setActiveTab('userManagement')"
+      >
+        UserManagement
+      </button>
+    </div>
+    <!-- End of Tab Navigation -->
+
+    <!-- Tab Content -->
+    <div class="tab-content min-h-[400px]">
+      <!-- User Management Tab Content -->
+      @if (activeTab === 'userManagement') {
+      <div class="tab-pane">
+        <app-user-management></app-user-management>
+      </div>
+      }
+      <!-- End of User Management Tab Content -->
+
+      <!-- Photo Mangement Tab Content -->
+      @else if(activeTab === 'photoManagement'){
+      <div class="tab-pane">
+        <app-photo-management></app-photo-management>
+      </div>
+      }
+      <!-- End of Photo Mangement Tab Content -->
+    </div>
+  </div>
+  <!-- End of Tab Section -->
+</div>

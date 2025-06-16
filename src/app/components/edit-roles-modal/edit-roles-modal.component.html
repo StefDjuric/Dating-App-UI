@@ -1,0 +1,62 @@
+<div
+  *ngIf="isOpen"
+  class="fixed inset-0 bg-black bg-opacity-[90%] flex items-center justify-center z-50"
+  style="background-color: rgba(0, 0, 0, 0.5)"
+  (click)="onBackdropClick($event)"
+>
+  <div class="bg-white rounded-lg shadow-xl w-80 mx-4">
+    <!-- Header -->
+    <div
+      class="px-6 py-4 border-b border-gray-200 flex justify-between items-center"
+    >
+      <h2 class="text-lg font-medium text-gray-900">User roles</h2>
+      <button
+        (click)="closeModal()"
+        class="text-gray-400 hover:text-gray-600 transition-colors hover:cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <form class="px-6 py-6">
+      <ul class="space-y-3">
+        <li
+          *ngFor="let role of availableRoles"
+          class="flex items-center space-x-3"
+        >
+          <span class="w-2 h-2 bg-gray-800 rounded-full"></span>
+          <label class="flex items-center space-x-2 cursor-pointer flex-1">
+            <input
+              type="checkbox"
+              [checked]="isRoleSelected(role)"
+              (change)="toggleRole(role)"
+              class="w-4 h-4 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <span class="font-medium">{{ role }}</span>
+          </label>
+        </li>
+        <li>
+          <app-button
+            type="submit"
+            text="Save Changes"
+            styling="rounded-lg px-4 py-2 bg-[#212529] hover:bg-[#343a40] hover:cursor-pointer text-nowrap"
+            (clicked)="saveChanges()"
+          ></app-button>
+        </li>
+      </ul>
+    </form>
+  </div>
+</div>

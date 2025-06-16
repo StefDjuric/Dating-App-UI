@@ -44,7 +44,16 @@
             </p>
           </li>
 
-          } }
+          }
+          <li
+            class="text-lg 3xl:text-xl text-[#495057] hover:text-[#212529] hover:cursor-pointer"
+            *appHasRole="['Admin', 'Moderator']"
+          >
+            <a [routerLink]="['/admin']" routerLinkActive="router-link-active"
+              >Admin</a
+            >
+          </li>
+          }
           <!-- Public NavLinks -->
           @else { @for (link of PUBLIC_NAV_LINKS; track $index) {
           <li class="">
