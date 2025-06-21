@@ -6,6 +6,7 @@ import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { RegisterDTO } from '../models/RegisterDTO';
 import { LikeService } from './like.service';
+import { PresenceService } from './presence.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -14,6 +15,7 @@ export class AccountService {
   private baseUrl = environment.baseUrl;
   private router = inject(Router);
   private likeService = inject(LikeService);
+  private presenceService = inject(PresenceService);
   currentUser = signal<User | null>(null);
   roles = computed(() => {
     const user = this.currentUser();
@@ -33,6 +35,7 @@ export class AccountService {
             localStorage.setItem('user', JSON.stringify(user));
             this.currentUser.set(user);
             this.likeService.getLikeIds();
+            this.presenceService.createHubConnection(user);
           }
           return user;
         })
@@ -51,6 +54,7 @@ export class AccountService {
           if (user) {
             localStorage.setItem('user', JSON.stringify(user));
             this.currentUser.set(user);
+            this.presenceService.createHubConnection(user);
           }
           return user;
         })
@@ -61,5 +65,6 @@ export class AccountService {
     localStorage.removeItem('user');
     this.currentUser.set(null);
     this.router.navigateByUrl('/home');
+    this.presenceService.stopHubConnection();
   }
 }

@@ -2,12 +2,12 @@ import {
   Component,
   inject,
   input,
+  OnChanges,
   OnInit,
-  output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MessageService } from '../../services/message.service';
-import { Message } from '../../models/Message';
 import { DatePipe } from '@angular/common';
 import { ButtonComponent } from '../../components/button/button.component';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -22,9 +22,7 @@ export class MemberDetailsMessagesComponent implements OnInit {
   @ViewChild('messageForm') messageForm?: NgForm;
   messageService = inject(MessageService);
   username = input.required<string>();
-  messages: Message[] = [];
   messageContent: string = '';
-  updatedMessages = output<Message>();
 
   ngOnInit(): void {
     this.loadMessages();
@@ -33,18 +31,15 @@ export class MemberDetailsMessagesComponent implements OnInit {
   sendMessage() {
     this.messageService
       .sendMessage(this.username(), this.messageContent)
-      .subscribe({
-        next: (message) => {
-          this.messages.push(message);
-          this.messageForm?.reset();
-        },
+      .then(() => {
+        this.messageForm?.reset();
       });
   }
 
   loadMessages() {
     this.messageService.getMessagesFromThread(this.username()).subscribe({
       next: (messages) => {
-        this.messages = messages;
+        // this.messageService.messageThread.set(messages);
       },
     });
   }

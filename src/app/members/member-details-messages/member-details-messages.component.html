@@ -1,10 +1,10 @@
 <div class="flex flex-col justify-center items-center w-full p-4">
-  @if(messages.length === 0){
+  @if(messageService.messageThread().length === 0){
   <p class="p-4 bg-gray-200">No messages yet</p>
   } @else {
   <ul class="w-full">
     <!-- Messages -->
-    @for (message of messages; track message.id) {
+    @for (message of messageService.messageThread(); track message.id) {
     <div class="flex justify-between items-center p-4 w-full">
       <!-- Message container -->
       <div class="flex flex-col gap-1">
