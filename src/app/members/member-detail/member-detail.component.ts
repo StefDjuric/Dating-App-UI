@@ -2,7 +2,6 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Member } from '../../models/Member';
 import { MembersService } from '../../services/members.service';
-import { ButtonComponent } from '../../components/button/button.component';
 import { DatePipe } from '@angular/common';
 import { MemberDetailsMessagesComponent } from '../member-details-messages/member-details-messages.component';
 import { PresenceService } from '../../services/presence.service';
@@ -11,7 +10,7 @@ import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-member-detail',
-  imports: [ButtonComponent, DatePipe, MemberDetailsMessagesComponent],
+  imports: [DatePipe, MemberDetailsMessagesComponent],
   standalone: true,
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.css',

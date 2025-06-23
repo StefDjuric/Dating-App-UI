@@ -1,10 +1,9 @@
 import {
+  AfterViewChecked,
   Component,
   inject,
   input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MessageService } from '../../services/message.service';
@@ -18,8 +17,11 @@ import { FormsModule, NgForm } from '@angular/forms';
   templateUrl: './member-details-messages.component.html',
   styleUrl: './member-details-messages.component.css',
 })
-export class MemberDetailsMessagesComponent implements OnInit {
+export class MemberDetailsMessagesComponent
+  implements OnInit, AfterViewChecked
+{
   @ViewChild('messageForm') messageForm?: NgForm;
+  @ViewChild('scroll') scrollContainer?: any;
   messageService = inject(MessageService);
   username = input.required<string>();
   messageContent: string = '';
@@ -28,19 +30,29 @@ export class MemberDetailsMessagesComponent implements OnInit {
     this.loadMessages();
   }
 
+  ngAfterViewChecked(): void {
+    this.scrollToBotom();
+  }
+
   sendMessage() {
     this.messageService
       .sendMessage(this.username(), this.messageContent)
       .then(() => {
         this.messageForm?.reset();
+        this.scrollToBotom();
       });
   }
 
   loadMessages() {
     this.messageService.getMessagesFromThread(this.username()).subscribe({
-      next: (messages) => {
-        // this.messageService.messageThread.set(messages);
-      },
+      next: (messages) => {},
     });
+  }
+
+  private scrollToBotom() {
+    if (this.scrollContainer) {
+      this.scrollContainer.nativeElement.scrollTop =
+        this.scrollContainer.nativeElement.scrollHeight;
+    }
   }
 }

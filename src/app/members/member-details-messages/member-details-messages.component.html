@@ -2,7 +2,7 @@
   @if(messageService.messageThread().length === 0){
   <p class="p-4 bg-gray-200">No messages yet</p>
   } @else {
-  <ul class="w-full">
+  <ul class="w-full overflow-scroll max-h-[500px] scroll-smooth" #scroll>
     <!-- Messages -->
     @for (message of messageService.messageThread(); track message.id) {
     <div class="flex justify-between items-center p-4 w-full">
